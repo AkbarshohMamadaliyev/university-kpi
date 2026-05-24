@@ -4,13 +4,13 @@ export interface RegisterDto {
   password: string;
   position?: string;
   departmentId?: number;
-  role: "TEACHER" | "DEPARTMENT" | "INSPECTOR";
+  role: "TEACHER" | "DEPARTMENT" | "INSPECTOR" | "DEVELOPER";
 }
 
 export interface LoginDto {
   email: string;
   password: string;
-  role: "TEACHER" | "DEPARTMENT" | "INSPECTOR";
+  role: "TEACHER" | "DEPARTMENT" | "INSPECTOR" | "DEVELOPER";
 }
 
 export interface AuthResponseDto {

@@ -24,12 +24,14 @@ export class AuthService {
         id: teacher.id,
         email: teacher.email,
         fullName: teacher.fullName,
-        role: "TEACHER",
+        role: "TEACHER" as const,
       };
     }
 
     if (dto.role === "DEPARTMENT") {
-      const existing = await Department.findOne({ where: { email: dto.email } });
+      const existing = await Department.findOne({
+        where: { email: dto.email },
+      });
       if (existing) throw new Error("Email already exists");
 
       const department = await Department.create({
@@ -43,7 +45,7 @@ export class AuthService {
         id: department.id,
         email: department.email,
         fullName: department.name,
-        role: "DEPARTMENT",
+        role: "DEPARTMENT" as const,
       };
     }
 
@@ -61,7 +63,25 @@ export class AuthService {
         id: inspector.id,
         email: inspector.email,
         fullName: inspector.fullName,
-        role: "INSPECTOR",
+        role: "INSPECTOR" as const,
+      };
+    }
+
+    if (dto.role === "DEVELOPER") {
+      const existing = await Inspector.findOne({ where: { email: dto.email } });
+      if (existing) throw new Error("Email already exists");
+
+      const developer = await Inspector.create({
+        fullName: dto.fullName,
+        email: dto.email,
+        password: hashedPassword,
+      });
+
+      return {
+        id: developer.id,
+        email: developer.email,
+        fullName: developer.fullName,
+        role: "DEVELOPER" as const,
       };
     }
 
@@ -85,7 +105,9 @@ export class AuthService {
     }
 
     if (dto.role === "DEPARTMENT") {
-      const department = await Department.findOne({ where: { email: dto.email } });
+      const department = await Department.findOne({
+        where: { email: dto.email },
+      });
       if (!department) throw new Error("Invalid email or password");
 
       const isMatch = await bcrypt.compare(dto.password, department.password);
@@ -100,7 +122,9 @@ export class AuthService {
     }
 
     if (dto.role === "INSPECTOR") {
-      const inspector = await Inspector.findOne({ where: { email: dto.email } });
+      const inspector = await Inspector.findOne({
+        where: { email: dto.email },
+      });
       if (!inspector) throw new Error("Invalid email or password");
 
       const isMatch = await bcrypt.compare(dto.password, inspector.password);
@@ -111,6 +135,23 @@ export class AuthService {
         email: inspector.email,
         fullName: inspector.fullName,
         role: "INSPECTOR" as const,
+      };
+    }
+
+    if (dto.role === "DEVELOPER") {
+      const developer = await Inspector.findOne({
+        where: { email: dto.email },
+      });
+      if (!developer) throw new Error("Invalid email or password");
+
+      const isMatch = await bcrypt.compare(dto.password, developer.password);
+      if (!isMatch) throw new Error("Invalid email or password");
+
+      return {
+        id: developer.id,
+        email: developer.email,
+        fullName: developer.fullName,
+        role: "DEVELOPER" as const,
       };
     }
 

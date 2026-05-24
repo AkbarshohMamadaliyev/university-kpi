@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 
-export type Role = "TEACHER" | "DEPARTMENT" | "INSPECTOR";
+export type Role = "TEACHER" | "DEPARTMENT" | "INSPECTOR" | "DEVELOPER";
 
 export interface JwtPayload {
   id: number;
